@@ -1,36 +1,134 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Holidaze
 
-## Getting Started
+Holidaze is a responsive venue booking site created for the Noroff Project Exam 2.
 
-First, run the development server:
+The application allows all visitors to browse venues and view a calendar with available and booked dates.
+Customers can create bookings, view upcoming bookings and update their profile.
+Venue managers can create, edit and delete a venue, view upcoming bookings for their venue and update their profile.
+
+The project was built using TypeScript, Next.js, Tailwind CSS and the Noroff Holidaze API.
+
+Live site: [Vercel](https://holidaze-tone.vercel.app/)
+
+## Features
+
+-
+-
+-
+
+## Tech Stack
+
+- HTML5 - Semantic page structure
+- TypeScript - Type-safe JavaScript
+- Tailwind CSS - Responsive styling and layout
+- Next.js - React framework for routing, server rendering and production builds
+- Noroff Holidaze API - Venues, bookings and profiles
+- Noroff Auth API - Authentication
+- Vercel - Production deployment
+
+## Installation
+
+### Prerequisites
+
+Make sure you have Node.js and npm installed on your machine before proceeding with the installation steps.
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Tunegj/Project-Exam-2.git
+```
+
+2. Open the project folder
+
+```bash
+cd Project-Exam-2
+```
+
+3. Install dependencies
+
+```bash
+npm install
+```
+
+## Running the Application
+
+Start the local development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To create a production build, run:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To preview the production build locally, run:
 
-## Learn More
+```bash
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copy the example:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+cp .env.example .env.local
+```
 
-## Deploy on Vercel
+Get an API key from the Noroff API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+NEXT_PUBLIC_API_BASE_URL=https://v2.api.noroff.dev
+NEXT_PUBLIC_API_KEY=your-noroff-api-key
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The .env.local file should not be committed if it contains private or environment-specific information.
+
+## Figma Design
+
+URL here
+
+## Kanban Board & Roadmap
+
+## AI Usage
+
+Claude was used as a learning and development aid throughout the project.
+
+It supported me in tasks such as:
+-
+
+-
+-
+
+See AI_LOG.md for a detailed log of how I used AI to help me solve problems and improve my code.
+
+## Testing & Validation
+
+### HTML Validation
+
+### Accessibility Testing
+
+### Lighthouse
+
+## Known Issues
+
+## Deployment
+
+### Live site
+
+[Vercel](https://holidaze-tone.vercel.app/)
+
+### Repository
+
+[GitHub](https://github.com/Tunegj/Project-Exam-2)
+
+## Author
+
+Tone Gjerde
+
+Noroff Frontend Development student.
+
+[GitHub](https://github.com/tunegj)
