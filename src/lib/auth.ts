@@ -1,6 +1,6 @@
 import { apiFetch } from "./api";
 import type { ApiResponse, Profile } from "@/types/api";
-import type { RegisterData } from "@/types/auth";
+import type { RegisterData, LoginData, LoginResponse } from "@/types/auth";
 
 /**
  * Registers a new Holidaze user.
@@ -12,6 +12,22 @@ import type { RegisterData } from "@/types/auth";
  */
 export async function registerUser(data: RegisterData): Promise<Profile> {
   const response = await apiFetch<ApiResponse<Profile>>("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+  return response.data;
+}
+
+/**
+ * Logs in a Holidaze user.
+ * `_holidaze=true` makes the API include venueManager in the answer
+ *
+ * @param data - email and password.
+ * @returns - THe profile with an accessToken
+ * @throws {ApiError}  if the email or password is wrong.
+ */
+export async function loginUser(data: LoginData): Promise<LoginResponse> {
+  const response = await apiFetch<ApiResponse<LoginResponse>>("/auth/login?_holidaze=true", {
     method: "POST",
     body: JSON.stringify(data),
   });
