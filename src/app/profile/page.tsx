@@ -1,7 +1,10 @@
+import RequireAuth from "@/components/auth/RequireAuth";
+import ProfileContent from "./ProfileContent";
+
 export default function ProfilePage() {
   return (
-    <div>
-      <h1>Profile</h1>
-    </div>
+    <RequireAuth>
+      <ProfileContent></ProfileContent>
+    </RequireAuth>
   );
 }
