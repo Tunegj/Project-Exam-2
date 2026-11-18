@@ -9,7 +9,9 @@ type AuthContextValue = {
   isReady: boolean;
   login: (user: LoginResponse) => void;
   logout: () => void;
+  updateUser: (changes: Partial<LoginResponse>) => void;
 };
+
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 /**
@@ -35,8 +37,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }
 
+  function updateUser(changes: Partial<LoginResponse>) {
+    if (!user) return;
+    const updatedUser = { ...user, ...changes };
+    saveUser(updatedUser);
+    setUser(updatedUser);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isReady, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isReady, login, logout, updateUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 

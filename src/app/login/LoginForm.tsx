@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ChangeEvent, type SubmitEvent } from "react";
-import NextLink from "next/link";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import FormField from "@/components/ui/FormField";
@@ -92,9 +92,9 @@ export default function LoginForm() {
 
       <p className="mt-6 text-sm">
         No account yet?{" "}
-        <NextLink href="/register" className="text-coastal font-medium underline">
+        <Link href="/register" className="text-coastal font-medium underline">
           Register
-        </NextLink>
+        </Link>
       </p>
     </>
   );
