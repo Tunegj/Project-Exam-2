@@ -15,11 +15,15 @@ export type VenueListResponse = {
  * @throws {ApiError} If the API answers with an error
  * @throws {TypeError} if there is no network connection
  */
-export async function getVenues(page = 1, limit = 12): Promise<VenueListResponse> {
+export async function getVenues(
+  page = 1,
+  limit = 12,
+  sort: "created" | "rating" = "created",
+): Promise<VenueListResponse> {
   const params = new URLSearchParams({
     page: String(page),
     limit: String(limit),
-    sort: "created",
+    sort,
     sortOrder: "desc",
   });
 

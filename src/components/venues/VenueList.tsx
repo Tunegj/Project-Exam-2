@@ -1,6 +1,6 @@
 "use client";
 
-import VenueCardSkeleton from "@/app/venues/VenueCardSkeleton";
+import VenueCardSkeleton from "@/components/venues/VenueCardSkeleton";
 import { ApiError } from "@/lib/api";
 import { getVenues, searchVenues } from "@/lib/venues";
 import { PaginationMeta, Venue } from "@/types/api";
