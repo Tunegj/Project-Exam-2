@@ -61,3 +61,15 @@ export type PaginationMeta = {
   pageCount: number;
   totalCount: number;
 };
+
+export type VenueBooking = {
+  id: string;
+  dateFrom: string;
+  dateTo: string;
+  guests: number;
+};
+
+export type VenueDetails = Venue & {
+  owner?: Profile;
+  bookings?: VenueBooking[];
+};

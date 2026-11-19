@@ -1,5 +1,5 @@
-import type { PaginationMeta, Venue } from "@/types/api";
-import { apiFetch } from "./api";
+import type { PaginationMeta, Venue, VenueDetails } from "@/types/api";
+import { ApiError, apiFetch } from "./api";
 
 export type VenueListResponse = {
   data: Venue[];
@@ -44,4 +44,18 @@ export async function searchVenues(
   });
 
   return apiFetch<VenueListResponse>(`/holidaze/venues/search?${params}`);
+}
+
+/**
+ * Gets one venue with its owner and bookings
+ *
+ * @param id - The venue id
+ * @returns The venue
+ * @throws {ApiError} If the API answers with an error, e.g 404 for unkownd ids.
+ */
+export async function getVenue(id: string): Promise<VenueDetails> {
+  const { data } = await apiFetch<{ data: VenueDetails }>(
+    `/holidaze/venues/${encodeURIComponent(id)}?_owner=true&_bookings=true`,
+  );
+  return data;
 }
