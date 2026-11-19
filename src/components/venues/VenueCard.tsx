@@ -39,12 +39,15 @@ export default function VenueCard({ venue }: { venue: Venue }) {
         <h3 className="text-navy text-2xl group-hover:underline">{venue.name}</h3>
         <p className="text-muted text-sm">{city}</p>
 
-        <div className="text-muted mt-2 flex items-center gap-4 text-sm">
-          <span className="flex items-center gap-1">
-            <Star aria-hidden className="fill-sand text-sand size-4" />
-            {venue.rating > 0 ? venue.rating.toFixed(1) : "New"}
+        <div className="text-muted mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+          <span className="flex items-center gap-1 whitespace-nowrap">
+            <Star
+              aria-hidden
+              className={`text-sand size-4 ${venue.rating > 0 ? "fill-sand" : ""}`}
+            />
+            {venue.rating > 0 ? venue.rating.toFixed(1) : "No rating yet"}
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 whitespace-nowrap">
             <Users aria-hidden className="size-4" />
             Up to {venue.maxGuests} guests
           </span>

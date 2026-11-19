@@ -1,13 +1,11 @@
 "use client";
 
-import type { SubmitEvent } from "react";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
-import MobileMenu from "./MobileMenu";
-import Button from "../ui/Button";
 import Avatar from "../ui/Avatar";
+import Button from "../ui/Button";
+import MobileMenu from "./MobileMenu";
 
 const navLink = "text-white hover:text-sand focus-visible:outline-2 focus-visible:outline-white";
 
@@ -24,12 +22,6 @@ export default function Header() {
     router.push("/");
   }
 
-  function handleSearch(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const query = new FormData(event.currentTarget).get("q")?.toString().trim() ?? "";
-    router.push(query ? `/venues?q=${encodeURIComponent(query)}` : "/venues");
-  }
-
   return (
     <header className="bg-navy">
       <nav
@@ -39,27 +31,6 @@ export default function Header() {
         <Link href="/" className="font-serif text-[28px] text-white">
           Holidaze
         </Link>
-
-        <form
-          role="search"
-          onSubmit={handleSearch}
-          className="relative hidden w-full max-w-sm md:block"
-        >
-          <label htmlFor="header-search" className="sr-only">
-            Search venues
-          </label>
-          <Search
-            aria-hidden
-            className="text-muted absolute top-1/2 left-3 size-5 -translate-y-1/2"
-          />
-          <input
-            id="header-search"
-            name="q"
-            type="search"
-            placeholder="Search..."
-            className="text-navy focus:ring-sand h-10 w-full rounded-lg bg-white pr-4 pl-10 outline-none focus:ring-2"
-          />
-        </form>
 
         {isReady && (
           <>

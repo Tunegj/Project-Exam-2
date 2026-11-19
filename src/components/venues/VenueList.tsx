@@ -2,7 +2,7 @@
 
 import VenueCardSkeleton from "@/app/venues/VenueCardSkeleton";
 import { ApiError } from "@/lib/api";
-import { getVenues } from "@/lib/venues";
+import { getVenues, searchVenues } from "@/lib/venues";
 import { PaginationMeta, Venue } from "@/types/api";
 import { useEffect, useState } from "react";
 import Button from "../ui/Button";
@@ -14,7 +14,11 @@ function getErrorMessage(error: unknown): string {
   return "Something went wrong while loading venues.";
 }
 
-export default function VenueList() {
+function fetchVenues(query: string, page: number) {
+  return query ? searchVenues(query, page) : getVenues(page);
+}
+
+export default function VenueList({ query = "" }: { query: string }) {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,8 +27,10 @@ export default function VenueList() {
 
   useEffect(() => {
     let ignore = false;
+    setIsLoading(true);
+    setError("");
 
-    getVenues(1)
+    fetchVenues(query, 1)
       .then((result) => {
         if (ignore) return;
         setVenues(result.data);
@@ -40,7 +46,7 @@ export default function VenueList() {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [query]);
 
   async function handleLoadMore() {
     if (!meta?.nextPage) return;
@@ -48,7 +54,7 @@ export default function VenueList() {
     setError("");
 
     try {
-      const result = await getVenues(meta.nextPage);
+      const result = await fetchVenues(query, meta.nextPage);
       setVenues((prev) => [...prev, ...result.data]);
       setMeta(result.meta);
     } catch (err) {
@@ -82,7 +88,13 @@ export default function VenueList() {
   }
 
   if (venues.length === 0) {
-    return <p className="text-muted">No venues found. Check back later!</p>;
+    return (
+      <p className="text-muted">
+        {query
+          ? `No venues found for "${query}". Try another search.`
+          : "No venues found. Check back later!"}
+      </p>
+    );
   }
 
   return (

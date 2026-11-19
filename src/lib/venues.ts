@@ -25,3 +25,19 @@ export async function getVenues(page = 1, limit = 12): Promise<VenueListResponse
 
   return apiFetch<VenueListResponse>(`/holidaze/venues?${params}`);
 }
+
+export async function searchVenues(
+  query: string,
+  page = 1,
+  limit = 12,
+): Promise<VenueListResponse> {
+  const params = new URLSearchParams({
+    q: query,
+    page: String(page),
+    limit: String(limit),
+    sort: "created",
+    sortOrder: "desc",
+  });
+
+  return apiFetch<VenueListResponse>(`/holidaze/venues/search?${params}`);
+}

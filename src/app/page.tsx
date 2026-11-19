@@ -1,3 +1,4 @@
+import VenueSearch from "@/components/venues/VenueSearch";
 import { apiFetch } from "@/lib/api";
 
 type TestResponse = {
@@ -10,6 +11,7 @@ export default async function HomePage() {
   return (
     <>
       <div>
+        <VenueSearch live />
         <h1>Venues</h1>
         <ul>
           {data.map((venue) => (
