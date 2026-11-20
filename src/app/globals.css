@@ -26,3 +26,17 @@
     @apply font-serif leading-[1.2];
   }
 }
+
+.rdp-root {
+  --rdp-accent-color: var(--color-coastal);
+  --rdp-accent-background-color: color-mix(in srgb, var(--color-coastal) 10%, transparent);
+  --rdp-day_button-border-radius: 0.5rem;
+  --rdp-selected-border: none;
+}
+
+.rdp-root .booked {
+  text-decoration: line-through;
+  background-color: var(--color-ivory);
+  color: var(--color-muted);
+  border-radius: 0.5rem;
+}

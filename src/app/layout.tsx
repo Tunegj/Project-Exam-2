@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
-import { Inter, DM_Serif_Display } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import { AuthProvider } from "@/context/AuthContext";
+import type { Metadata } from "next";
+import { DM_Serif_Display, Inter } from "next/font/google";
+import "react-day-picker/style.css";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",

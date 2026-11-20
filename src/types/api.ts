@@ -50,6 +50,7 @@ export type Venue = {
   updated: string;
   meta: VenueMeta;
   location: Location;
+  bookings?: VenueBooking[];
 };
 
 export type PaginationMeta = {
