@@ -84,7 +84,12 @@ export default async function VenuePage({ params }: VenuePageProps) {
             </div>
           )}
         </div>
-        <BookingCard price={venue.price} />
+        <BookingCard
+          price={venue.price}
+          bookings={venue.bookings}
+          maxGuests={venue.maxGuests}
+          ownerName={venue.owner?.name}
+        />
       </div>
     </main>
   );

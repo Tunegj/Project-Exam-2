@@ -74,3 +74,10 @@ export type VenueDetails = Venue & {
   owner?: Profile;
   bookings?: VenueBooking[];
 };
+
+export type CreateBookingData = {
+  dateFrom: string;
+  dateTo: string;
+  guests: number;
+  venueId: string;
+};

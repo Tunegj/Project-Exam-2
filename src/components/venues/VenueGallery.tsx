@@ -52,7 +52,7 @@ export default function VenueGallery({ media, name }: { media: Venue["media"]; n
   }
 
   return (
-    <div className={`mb-8 md:grid md:aspect-[5/2] md:gap-3 ${count > 1 ? "md:grid-cols-2" : ""}`}>
+    <div className={`mb-8 md:grid md:aspect-5/2 md:gap-3 ${count > 1 ? "md:grid-cols-2" : ""}`}>
       <div className="bg-navy/10 relative aspect-4/3 overflow-hidden rounded-xl md:aspect-auto">
         <GalleryImage key={selected} url={current?.url ?? ""} alt={current?.alt || name} priority />
 
