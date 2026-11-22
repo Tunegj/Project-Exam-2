@@ -1,5 +1,5 @@
+import BookingCard from "@/components/bookings/BookingCard";
 import Avatar from "@/components/ui/Avatar";
-import BookingCard from "@/components/venues/BookingCard";
 import VenueAmenities from "@/components/venues/VenueAmenities";
 import VenueDescription from "@/components/venues/VenueDescription";
 import VenueGallery from "@/components/venues/VenueGallery";

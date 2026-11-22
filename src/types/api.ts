@@ -81,3 +81,5 @@ export type CreateBookingData = {
   guests: number;
   venueId: string;
 };
+
+export type ProfileBooking = VenueBooking & { venue: Venue };

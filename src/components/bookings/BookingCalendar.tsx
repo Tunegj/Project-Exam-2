@@ -1,6 +1,6 @@
 "use client";
+import BookingConfirmModal from "@/components/bookings/BookingConfirmModal";
 import Button from "@/components/ui/Button";
-import BookingConfirmModal from "@/components/venues/BookingConfirmModal";
 import { useAuth } from "@/context/AuthContext";
 import { ApiError } from "@/lib/api";
 import { formatDisplayDate, getBookedRanges, toApiDate } from "@/lib/bookingDates";
