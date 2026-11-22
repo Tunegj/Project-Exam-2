@@ -1,7 +1,7 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { useEffect, useRef } from "react";
-import Button from "../ui/Button";
 
 type BookingConfirmModalProps = {
   isOpen: boolean;
@@ -12,6 +12,10 @@ type BookingConfirmModalProps = {
   summary: string;
 };
 
+/**
+ * Pop up that asks the user to confirm a booking.
+ * Uses the native dialog element (focus trap, esc to close)
+ */
 export default function BookingConfirmModal({
   isOpen,
   onClose,
@@ -24,8 +28,9 @@ export default function BookingConfirmModal({
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (isOpen) dialog?.showModal();
-    else dialog?.close();
+    if (!dialog) return;
+    if (isOpen && !dialog.open) dialog.showModal();
+    if (!isOpen && dialog.open) dialog.close();
   }, [isOpen]);
 
   return (
@@ -40,8 +45,8 @@ export default function BookingConfirmModal({
       </h2>
       <p className="text-muted mb-6 whitespace-pre-line">{summary}</p>
       {error && (
-        <p role="alert" className="text-error" mb-4 text-sm>
-          {error}{" "}
+        <p role="alert" className="text-error mb-4 text-sm">
+          {error}
         </p>
       )}
       <div className="flex justify-end gap-3">

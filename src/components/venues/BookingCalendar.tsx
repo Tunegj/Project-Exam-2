@@ -1,12 +1,15 @@
 "use client";
-
 import Button from "@/components/ui/Button";
+import BookingConfirmModal from "@/components/venues/BookingConfirmModal";
 import { useAuth } from "@/context/AuthContext";
-import { getBookedRanges } from "@/lib/bookingDates";
+import { ApiError } from "@/lib/api";
+import { formatDisplayDate, getBookedRanges, toApiDate } from "@/lib/bookingDates";
+import { createBooking } from "@/lib/bookings";
 import type { VenueBooking } from "@/types/api";
 import { differenceInCalendarDays, startOfDay } from "date-fns";
 import { Minus, Plus } from "lucide-react";
 import NextLink from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DayPicker, type DateRange } from "react-day-picker";
 
@@ -15,6 +18,7 @@ type BookingCalendarProps = {
   price: number;
   maxGuests: number;
   ownerName?: string;
+  venueId: string;
 };
 
 export default function BookingCalendar({
@@ -22,6 +26,7 @@ export default function BookingCalendar({
   price,
   maxGuests,
   ownerName,
+  venueId,
 }: BookingCalendarProps) {
   const [range, setRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(1);
@@ -35,12 +40,55 @@ export default function BookingCalendar({
   const isOwner = !!user && user.name === ownerName;
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const router = useRouter();
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const summary =
+    range?.from && range?.to
+      ? `Booking as ${user?.name}
+    ${formatDisplayDate(range.from)} – ${formatDisplayDate(range.to)}
+    ${nights} ${nights === 1 ? "night" : "nights"} · ${guests} ${guests === 1 ? "guest" : "guests"}
+    Total: NOK ${total.toLocaleString("nb-NO")}`
+      : "";
+
+  async function handleConfirm() {
+    if (!user || !range?.from || !range?.to) return;
+    setIsLoading(true);
+    setError("");
+    try {
+      await createBooking(
+        {
+          venueId,
+          guests,
+          dateFrom: toApiDate(range.from),
+          dateTo: toApiDate(range.to),
+        },
+        user.accessToken,
+      );
+      setIsConfirmOpen(false);
+      setSuccessMessage("Your booking is confirmed! 🎉");
+      setRange(undefined);
+      setGuests(1);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div>
       <DayPicker
         mode="range"
         selected={range}
-        onSelect={setRange}
+        onSelect={(newRange) => {
+          setRange(newRange);
+          setSuccessMessage("");
+        }}
         disabled={[{ before: today }, ...booked]}
         excludeDisabled
         modifiers={{ booked }}
@@ -96,6 +144,12 @@ export default function BookingCalendar({
         </p>
       )}
 
+      {successMessage && (
+        <p role="status" className="bg-sage/10 text-sage mt-6 rounded-lg p-3 text-sm">
+          {successMessage}
+        </p>
+      )}
+
       {isOwner ? (
         <p className="text-muted mt-6 text-sm">This is your venue, so you can't book it.</p>
       ) : user ? (
@@ -114,6 +168,17 @@ export default function BookingCalendar({
           Log in to book
         </NextLink>
       )}
+      <BookingConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => {
+          setIsConfirmOpen(false);
+          setError("");
+        }}
+        onConfirm={handleConfirm}
+        isLoading={isLoading}
+        error={error}
+        summary={summary}
+      />
     </div>
   );
 }

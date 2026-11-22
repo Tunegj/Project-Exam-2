@@ -89,6 +89,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
           bookings={venue.bookings}
           maxGuests={venue.maxGuests}
           ownerName={venue.owner?.name}
+          venueId={venue.id}
         />
       </div>
     </main>
