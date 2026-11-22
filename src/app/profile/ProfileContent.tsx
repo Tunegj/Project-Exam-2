@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useAuth } from "@/context/AuthContext";
-import { getProfile } from "@/lib/profile";
-import { ApiError } from "@/lib/api";
-import type { Profile, Media } from "@/types/api";
-import Button from "@/components/ui/Button";
-import EditAvatarForm from "./EditAvatarForm";
+import ProfileBookings from "@/components/bookings/ProfileBookings";
 import Avatar from "@/components/ui/Avatar";
+import Button from "@/components/ui/Button";
+import { useAuth } from "@/context/AuthContext";
+import { ApiError } from "@/lib/api";
+import { getProfile } from "@/lib/profile";
+import type { Media, Profile } from "@/types/api";
+import NextImage from "next/image";
+import { useEffect, useState } from "react";
+import EditAvatarForm from "./EditAvatarForm";
 
 export default function ProfileContent() {
   const { user, updateUser } = useAuth();
@@ -41,31 +43,53 @@ export default function ProfileContent() {
   if (!profile) return <p className="text-muted py-12">Loading profile...</p>;
 
   return (
-    <section className="py-12">
-      <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-        <Avatar name={profile.name} avatar={profile.avatar} className="size-24 text-3xl" />
+    <div className="py-8">
+      <div className="bg-coastal/20 relative h-40 overflow-hidden rounded-xl md:h-56">
+        {profile.banner?.url && (
+          <NextImage
+            src={profile.banner.url}
+            alt={profile.banner.alt || ""}
+            fill
+            unoptimized
+            priority
+            className="object-cover"
+          />
+        )}
+      </div>
+
+      <section className="grid gap-10 pb-12 md:grid-cols-[18rem_1fr]">
         <div>
-          <h1 className="font-heading text-navy text-4xl">{profile.name}</h1>
-          <p className="text-navy mt-2">{profile.email}</p>
+          <div className="relative -mt-12 ml-6 w-fit">
+            <Avatar
+              name={profile.name}
+              avatar={profile.avatar}
+              className="ring-ivory size-24 text-3xl ring-4"
+            />
+          </div>
+          <h1 className="text-navy mt-4 text-3xl">{profile.name}</h1>
+          <p className="text-muted mt-1 text-sm">{profile.email}</p>
           <p className="text-muted mt-1 text-sm">
             {profile.venueManager ? "Venue manager" : "Customer"}
           </p>
-        </div>
-      </div>
 
-      {isEditing ? (
-        <EditAvatarForm
-          name={user.name}
-          token={user.accessToken}
-          currentAvatar={profile.avatar}
-          onSaved={handleAvatarSaved}
-          onCancel={() => setIsEditing(false)}
-        />
-      ) : (
-        <Button variant="secondary" className="mt-6" onClick={() => setIsEditing(true)}>
-          Edit avatar
-        </Button>
-      )}
-    </section>
+          {isEditing ? (
+            <EditAvatarForm
+              name={user.name}
+              token={user.accessToken}
+              currentAvatar={profile.avatar}
+              onSaved={handleAvatarSaved}
+              onCancel={() => setIsEditing(false)}
+            />
+          ) : (
+            <Button variant="secondary" className="mt-6" onClick={() => setIsEditing(true)}>
+              Edit avatar
+            </Button>
+          )}
+        </div>
+        <div className="md:pt-16">
+          <ProfileBookings />
+        </div>
+      </section>
+    </div>
   );
 }

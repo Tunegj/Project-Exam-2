@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { ApiError } from "@/lib/api";
 import { formatDisplayDate, getBookedRanges, toApiDate } from "@/lib/bookingDates";
 import { createBooking } from "@/lib/bookings";
+import { formatPrice } from "@/lib/format";
 import type { VenueBooking } from "@/types/api";
 import { differenceInCalendarDays, startOfDay } from "date-fns";
 import { Minus, Plus } from "lucide-react";
@@ -52,7 +53,7 @@ export default function BookingCalendar({
           `Booking as ${user?.name}`,
           `${formatDisplayDate(range.from)} – ${formatDisplayDate(range.to)}`,
           `${nights} ${nights === 1 ? "night" : "nights"} · ${guests} ${guests === 1 ? "guest" : "guests"}`,
-          `Total: NOK ${total.toLocaleString("nb-NO")}`,
+          `Total: NOK ${formatPrice(total)}`,
         ].join("\n")
       : "";
 
@@ -150,8 +151,7 @@ export default function BookingCalendar({
 
           {nights > 0 && (
             <p className="mt-4">
-              Total: NOK {total.toLocaleString("nb-NO")} ({nights}{" "}
-              {nights === 1 ? "night" : "nights"})
+              Total: {formatPrice(total)} ({nights} {nights === 1 ? "night" : "nights"})
             </p>
           )}
         </>

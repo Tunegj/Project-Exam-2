@@ -4,6 +4,7 @@ import VenueAmenities from "@/components/venues/VenueAmenities";
 import VenueDescription from "@/components/venues/VenueDescription";
 import VenueGallery from "@/components/venues/VenueGallery";
 import { ApiError } from "@/lib/api";
+import { formatPrice } from "@/lib/format";
 import { getVenue } from "@/lib/venues";
 import { MapPin, Star, Users } from "lucide-react";
 import type { Metadata } from "next";
@@ -64,7 +65,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
               Up to {venue.maxGuests} guests
             </li>
             <li className="text-navy text-xl font-medium">
-              NOK {venue.price.toLocaleString("nb-NO")}{" "}
+              {formatPrice(venue.price)}{" "}
               <span className="text-muted text-base font-normal">/ night</span>
             </li>
           </ul>

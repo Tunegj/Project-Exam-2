@@ -105,6 +105,10 @@ It supported me in tasks such as:
 
 See AI_LOG.md for a detailed log of how I used AI to help me solve problems and improve my code.
 
+## Future Improvements
+
+- Guests can rate past stays (needs a review endpoint)
+
 ## Testing & Validation
 
 ### HTML Validation
