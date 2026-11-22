@@ -48,10 +48,12 @@ export default function BookingCalendar({
 
   const summary =
     range?.from && range?.to
-      ? `Booking as ${user?.name}
-    ${formatDisplayDate(range.from)} – ${formatDisplayDate(range.to)}
-    ${nights} ${nights === 1 ? "night" : "nights"} · ${guests} ${guests === 1 ? "guest" : "guests"}
-    Total: NOK ${total.toLocaleString("nb-NO")}`
+      ? [
+          `Booking as ${user?.name}`,
+          `${formatDisplayDate(range.from)} – ${formatDisplayDate(range.to)}`,
+          `${nights} ${nights === 1 ? "night" : "nights"} · ${guests} ${guests === 1 ? "guest" : "guests"}`,
+          `Total: NOK ${total.toLocaleString("nb-NO")}`,
+        ].join("\n")
       : "";
 
   async function handleConfirm() {
@@ -79,6 +81,12 @@ export default function BookingCalendar({
       setIsLoading(false);
     }
   }
+
+  const bookLabel = !range?.from
+    ? "Select check-in date"
+    : nights === 0
+      ? "Select check-out date"
+      : "Book now";
 
   return (
     <div>
@@ -111,37 +119,42 @@ export default function BookingCalendar({
           Booked
         </li>
       </ul>
-      <div className="mt-6 flex items-center justify-between">
-        <span id="guests-label" className="text-sm">
-          Guests
-        </span>
-        <div role="group" aria-labelledby="guests-label" className="flex items-center gap-4">
-          <button
-            type="button"
-            onClick={() => setGuests((g) => g - 1)}
-            disabled={guests <= 1}
-            aria-label="fewer guests"
-            className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
-          >
-            <Minus aria-hidden className="size-5" />
-          </button>
-          <span aria-live="polite">{guests}</span>
-          <button
-            type="button"
-            onClick={() => setGuests((g) => g + 1)}
-            disabled={guests >= maxGuests}
-            aria-label="More guests"
-            className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
-          >
-            <Plus aria-hidden className="size-5" />
-          </button>
-        </div>
-      </div>
+      {!isOwner && (
+        <>
+          <div className="mt-6 flex items-center justify-between">
+            <span id="guests-label" className="text-sm">
+              Guests
+            </span>
+            <div role="group" aria-labelledby="guests-label" className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setGuests((g) => g - 1)}
+                disabled={guests <= 1}
+                aria-label="fewer guests"
+                className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
+              >
+                <Minus aria-hidden className="size-5" />
+              </button>
+              <span aria-live="polite">{guests}</span>
+              <button
+                type="button"
+                onClick={() => setGuests((g) => g + 1)}
+                disabled={guests >= maxGuests}
+                aria-label="More guests"
+                className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
+              >
+                <Plus aria-hidden className="size-5" />
+              </button>
+            </div>
+          </div>
 
-      {nights > 0 && (
-        <p className="mt-4">
-          Total: NOK {total.toLocaleString("nb-NO")} ({nights} {nights === 1 ? "night" : "nights"})
-        </p>
+          {nights > 0 && (
+            <p className="mt-4">
+              Total: NOK {total.toLocaleString("nb-NO")} ({nights}{" "}
+              {nights === 1 ? "night" : "nights"})
+            </p>
+          )}
+        </>
       )}
 
       {successMessage && (
@@ -151,14 +164,14 @@ export default function BookingCalendar({
       )}
 
       {isOwner ? (
-        <p className="text-muted mt-6 text-sm">This is your venue, so you can't book it.</p>
+        <p className="text-muted mt-6 text-sm">Upcoming bookings for your venue</p>
       ) : user ? (
         <Button
           className="mt-6 w-full"
           disabled={nights === 0}
           onClick={() => setIsConfirmOpen(true)}
         >
-          Book now
+          {bookLabel}
         </Button>
       ) : (
         <NextLink
