@@ -22,3 +22,12 @@ export async function getProfileBookings(name: string, token: string): Promise<P
   );
   return res.data;
 }
+
+/**
+ * Deletes a booking by its ID.
+ * @param id - the booking ID
+ * @param token - the user's access token
+ */
+export async function deleteBooking(id: string, token: string): Promise<void> {
+  await apiFetch<void>(`/holidaze/bookings/${id}`, { method: "DELETE", token });
+}

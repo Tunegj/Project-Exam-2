@@ -5,6 +5,7 @@ import { getProfileBookings } from "@/lib/bookings";
 import type { ProfileBooking } from "@/types/api";
 import { startOfDay } from "date-fns";
 import { useEffect, useState } from "react";
+import BookingDetailsModal from "./BookingDetailsModal";
 import BookingsEmptyState from "./BookingsEmptyState";
 import ProfileBookingCard from "./ProfileBookingCard";
 
@@ -16,6 +17,7 @@ export default function ProfileBookings() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [tab, setTab] = useState<Tab>("upcoming");
+  const [selected, setSelected] = useState<ProfileBooking | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -84,12 +86,26 @@ export default function ProfileBookings() {
           <ul className="grid gap-4 md:grid-cols-2">
             {shown.map((b) => (
               <li key={b.id}>
-                <ProfileBookingCard booking={b} isPast={tab === "past"} />
+                <ProfileBookingCard
+                  booking={b}
+                  isPast={tab === "past"}
+                  onSelect={() => setSelected(b)}
+                />
               </li>
             ))}
           </ul>
         )}
       </div>
+      {selected && (
+        <BookingDetailsModal
+          booking={selected}
+          onClose={() => setSelected(null)}
+          onCancelled={(id) => {
+            setBookings((prev) => prev.filter((b) => b.id !== id));
+            setSelected(null);
+          }}
+        />
+      )}
     </section>
   );
 }
