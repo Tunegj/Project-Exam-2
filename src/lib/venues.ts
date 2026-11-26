@@ -1,4 +1,4 @@
-import type { PaginationMeta, Venue, VenueDetails } from "@/types/api";
+import type { PaginationMeta, Venue, VenueDetails, VenueInput } from "@/types/api";
 import { ApiError, apiFetch } from "./api";
 
 export type VenueListResponse = {
@@ -58,4 +58,27 @@ export async function getVenue(id: string): Promise<VenueDetails> {
     `/holidaze/venues/${encodeURIComponent(id)}?_owner=true&_bookings=true`,
   );
   return data;
+}
+
+export async function getProfileVenue(name: string, token: string): Promise<Venue[]> {
+  const res = await apiFetch<{ data: Venue[] }>(
+    `holidaze/profiles/${encodeURIComponent(name)}/venues?_bookings=true`,
+    { token },
+  );
+  return res.data;
+}
+
+/**
+ * Creates a new venue for the logged-in venue manager.
+ * @param venue = The venue data from the form
+ * @param token - the user's access token
+ * @returns the created venue
+ */
+export async function createVenue(venue: VenueInput, token: string): Promise<Venue> {
+  const res = await apiFetch<{ data: Venue }>("/holidaze/venues", {
+    method: "POST",
+    token,
+    body: JSON.stringify(venue),
+  });
+  return res.data;
 }
