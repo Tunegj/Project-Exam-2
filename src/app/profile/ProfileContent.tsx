@@ -1,6 +1,7 @@
 "use client";
 
 import ProfileBookings from "@/components/bookings/ProfileBookings";
+import ManagerTabs from "@/components/profile/ManagerTabs";
 import Avatar from "@/components/ui/Avatar";
 import Button from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
@@ -87,7 +88,7 @@ export default function ProfileContent() {
           )}
         </div>
         <div className="md:pt-16">
-          <ProfileBookings />
+          {profile.venueManager ? <ManagerTabs /> : <ProfileBookings />}
         </div>
       </section>
     </div>

@@ -60,9 +60,15 @@ export async function getVenue(id: string): Promise<VenueDetails> {
   return data;
 }
 
-export async function getProfileVenue(name: string, token: string): Promise<Venue[]> {
-  const res = await apiFetch<{ data: Venue[] }>(
-    `holidaze/profiles/${encodeURIComponent(name)}/venues?_bookings=true`,
+/**
+ * Gets a manager's venues, with their bookings.
+ * @param name - the profile name
+ * @param token - the user's access token
+ * @returns the venues this profile owns
+ */
+export async function getProfileVenues(name: string, token: string): Promise<VenueDetails[]> {
+  const res = await apiFetch<{ data: VenueDetails[] }>(
+    `/holidaze/profiles/${encodeURIComponent(name)}/venues?_bookings=true`,
     { token },
   );
   return res.data;
