@@ -88,3 +88,48 @@ export async function createVenue(venue: VenueInput, token: string): Promise<Ven
   });
   return res.data;
 }
+
+/**
+ * Updates an existing venue. Only the owner can do this.
+ * @param id - the venue's id
+ * @param venue - the new venue data from the form
+ * @param token - the user's access token
+ * @returns the updated venue
+ */
+export async function updateVenue(id: string, venue: VenueInput, token: string): Promise<Venue> {
+  const res = await apiFetch<{ data: Venue }>(`/holidaze/venues/${id}`, {
+    method: "PUT",
+    token,
+    body: JSON.stringify(venue),
+  });
+  return res.data;
+}
+
+/**
+ * Turns a venue from the API into starting values for VenueForm.
+ * Keeps only the fields the form edits
+ * @param venue - the venue as returned by the API
+ * @returns - the same venue in the VenueInput shape
+ */
+export function toVenueInput(venue: Venue): VenueInput {
+  return {
+    name: venue.name,
+    description: venue.description ?? "",
+    price: venue.price,
+    maxGuests: venue.maxGuests,
+    rating: venue.rating,
+    media: venue.media?.map(({ url, alt }) => ({ url, alt: alt ?? "" })) ?? [],
+    meta: {
+      wifi: venue.meta?.wifi ?? false,
+      parking: venue.meta?.parking ?? false,
+      breakfast: venue.meta?.breakfast ?? false,
+      pets: venue.meta?.pets ?? false,
+    },
+    location: {
+      address: venue.location?.address ?? "",
+      city: venue.location?.city ?? "",
+      zip: venue.location?.zip ?? "",
+      country: venue.location?.country ?? "",
+    },
+  };
+}

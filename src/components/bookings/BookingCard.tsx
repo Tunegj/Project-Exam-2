@@ -1,3 +1,6 @@
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/lib/format";
 import { VenueBooking } from "@/types/api";
 import BookingCalendar from "./BookingCalendar";
@@ -17,12 +20,21 @@ export default function BookingCard({
   ownerName,
   venueId,
 }: BookinCardProps) {
+  const { user } = useAuth();
+  const isOwner = !!user && user.name === ownerName;
+
   return (
     <aside id="booking" className="rounded-xl bg-white p-6 shadow-sm md:sticky md:top-8">
-      <h2 className="mb-4 text-2xl">
-        {formatPrice(price)} <span className="text-muted text-base">/ night</span>
-      </h2>
-      <p className="text-muted">Check availability</p>
+      {isOwner ? (
+        <h2 className="mb-4 text-2xl">Your venue</h2>
+      ) : (
+        <>
+          <h2 className="mb-4 text-2xl">
+            {formatPrice(price)} <span className="text-muted text-base">/ night</span>
+          </h2>
+          <p className="text-muted">Check availability</p>
+        </>
+      )}
       <BookingCalendar
         bookings={bookings}
         price={price}

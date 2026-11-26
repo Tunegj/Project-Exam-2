@@ -13,6 +13,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DayPicker, type DateRange } from "react-day-picker";
+import OwnerVenuePanel from "./OwnerVenuePanel";
 
 type BookingCalendarProps = {
   bookings?: VenueBooking[];
@@ -47,13 +48,17 @@ export default function BookingCalendar({
   const router = useRouter();
   const [successMessage, setSuccessMessage] = useState("");
 
+  if (isOwner) {
+    return <OwnerVenuePanel bookings={bookings} venueId={venueId} />;
+  }
+
   const summary =
     range?.from && range?.to
       ? [
           `Booking as ${user?.name}`,
           `${formatDisplayDate(range.from)} – ${formatDisplayDate(range.to)}`,
           `${nights} ${nights === 1 ? "night" : "nights"} · ${guests} ${guests === 1 ? "guest" : "guests"}`,
-          `Total: NOK ${formatPrice(total)}`,
+          `Total: ${formatPrice(total)}`,
         ].join("\n")
       : "";
 
@@ -120,41 +125,38 @@ export default function BookingCalendar({
           Booked
         </li>
       </ul>
-      {!isOwner && (
-        <>
-          <div className="mt-6 flex items-center justify-between">
-            <span id="guests-label" className="text-sm">
-              Guests
-            </span>
-            <div role="group" aria-labelledby="guests-label" className="flex items-center gap-4">
-              <button
-                type="button"
-                onClick={() => setGuests((g) => g - 1)}
-                disabled={guests <= 1}
-                aria-label="fewer guests"
-                className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
-              >
-                <Minus aria-hidden className="size-5" />
-              </button>
-              <span aria-live="polite">{guests}</span>
-              <button
-                type="button"
-                onClick={() => setGuests((g) => g + 1)}
-                disabled={guests >= maxGuests}
-                aria-label="More guests"
-                className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
-              >
-                <Plus aria-hidden className="size-5" />
-              </button>
-            </div>
-          </div>
 
-          {nights > 0 && (
-            <p className="mt-4">
-              Total: {formatPrice(total)} ({nights} {nights === 1 ? "night" : "nights"})
-            </p>
-          )}
-        </>
+      <div className="mt-6 flex items-center justify-between">
+        <span id="guests-label" className="text-sm">
+          Guests
+        </span>
+        <div role="group" aria-labelledby="guests-label" className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => setGuests((g) => g - 1)}
+            disabled={guests <= 1}
+            aria-label="fewer guests"
+            className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
+          >
+            <Minus aria-hidden className="size-5" />
+          </button>
+          <span aria-live="polite">{guests}</span>
+          <button
+            type="button"
+            onClick={() => setGuests((g) => g + 1)}
+            disabled={guests >= maxGuests}
+            aria-label="More guests"
+            className="border-coastal text-coastal rounded-full border p-1 disabled:opacity-30"
+          >
+            <Plus aria-hidden className="size-5" />
+          </button>
+        </div>
+      </div>
+
+      {nights > 0 && (
+        <p className="mt-4">
+          Total: {formatPrice(total)} ({nights} {nights === 1 ? "night" : "nights"})
+        </p>
       )}
 
       {successMessage && (
@@ -163,9 +165,7 @@ export default function BookingCalendar({
         </p>
       )}
 
-      {isOwner ? (
-        <p className="text-muted mt-6 text-sm">Upcoming bookings for your venue</p>
-      ) : user ? (
+      {user ? (
         <Button
           className="mt-6 w-full"
           disabled={nights === 0}
